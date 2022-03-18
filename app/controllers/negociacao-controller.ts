@@ -1,3 +1,6 @@
+import { domInjector } from '../decorators/dom-injector.js';
+import { inspect } from '../decorators/inspect.js';
+import { logarTempo } from '../decorators/logar-tempo.js';
 import { DiasSemana } from '../enums/diasSemana.js';
 import { Negociacao } from '../models/negociacao.js';
 import { Negociacoes } from '../models/negociacoes.js';
@@ -5,17 +8,22 @@ import { MensagemView } from '../views/mensagem-view.js';
 import { NegociacoesView } from '../views/negociacoes-view.js';
 
 export class NegociacaoController {
+    @domInjector('#data')
     private inputData: HTMLInputElement;
+    @domInjector('#quantidade')
     private inputQuantidade: HTMLInputElement;
+    @domInjector('#valor')
     private inputValor: HTMLInputElement;
+
     private negociacoes = new Negociacoes();
-    private negociacoesView = new NegociacoesView('#negociacoesView', true);
-    private mensagemView =  new MensagemView('#mensagemView', true);
+    private negociacoesView = new NegociacoesView('#negociacoesView');
+    private mensagemView =  new MensagemView('#mensagemView');
 
     constructor() {
-        this.inputData = document.querySelector('#data') as HTMLInputElement;
-        this.inputQuantidade = document.querySelector('#quantidade') as HTMLInputElement;
-        this.inputValor = document.querySelector('#valor') as HTMLInputElement;
+        // Substituidos pelo decorator @domInjector();
+        // this.inputData = document.querySelector('#data') as HTMLInputElement;
+        // this.inputQuantidade = document.querySelector('#quantidade') as HTMLInputElement;
+        // this.inputValor = document.querySelector('#valor') as HTMLInputElement;
         this.negociacoesView.update(this.negociacoes);
     }
 
@@ -23,6 +31,8 @@ export class NegociacaoController {
         return data.getDay() > DiasSemana.SABADO && data.getDay() < DiasSemana.DOMINGO;
     }
 
+    @inspect
+    @logarTempo()
     public adiciona(): void {
         const negociacao = Negociacao.criaNegociacao(
             this.inputData.value,
