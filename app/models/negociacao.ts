@@ -19,6 +19,7 @@ export class Negociacao {
         const date = new Date(data.replace(exp, ','));
         const quantidade = parseInt(amount);
         const valor = parseFloat(value);
+        
         return new Negociacao(date, quantidade, valor);
     }
 }
